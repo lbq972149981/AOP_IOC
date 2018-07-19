@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+    <!--默认的情况下是调用该类默认的无参构造函数来创建类的对象-->
+    <!--singleton为单例
+        prototype为多例
+        默认单例
+    -->
+    <bean id="person" class="IoC.Person" scope="singleton"/>
+    <!--Spring容器利用静态工厂方法创建类对象-->
+    <bean id="personFactory" class="IoC.PersonFactory" factory-method="getInstance"/>
+    <!--Spring配置文件中别名的用法-->
+    <alias name="person" alias="per"/>
+    <!--依赖注入-->
+    <bean id="personDI" class="IoC.PersonDI">
+        <property name="pid" value="1"></property>
+        <property name="pname" value="liu"></property>
+        <!--以下两种均可以-->
+        <property name="person" ref="person"></property>
+       <!-- <property name="person">
+            <ref bean="person"/>
+        </property>-->
+        <property name="lists">
+            <list>
+                <value>list</value>
+                <value>123</value>
+                <ref bean="person"/>
+            </list>
+        </property>
+        <property name="sets">
+            <set>
+                <value>set</value>
+                <ref bean="person"/>
+                <value>123</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="m1" value="map1"></entry>
+                <entry key="m2" value-ref="person"></entry>
+            </map>
+        </property>
+    </bean>
+</beans>
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+  <settings>
+    <setting name="lazyLoadingEnabled" value="true"/>
+    <!--缓存开关
+      需要对bean中涉及的类反序列化
+    1.一级缓存指的是同一个会话使用多次最后close 默认为一级缓存
+    2.二级缓存指的是不同会话使用一个缓存 需要设置全局缓存打开状态
+      1)在mybatis中settings设置缓存开关
+      2)在相应的mapper中加上<cache/>标签
+      3)mapper中select标签中有useCache 指定该sql语句是否可以使用缓存
+    -->
+
+    <!--<setting name="cacheEnabled" value="true"/>-->
+    <setting name="aggressiveLazyLoading" value="false"/>
+  </settings>
+  <!--类的绝对路径简化为类名-->
+  <typeAliases>
+    <package name="Mybatis.po"/>
+  </typeAliases>
+
+  <plugins>
+    <plugin interceptor="Mybatis.interceptor.Myinterceptor">
+      <property name="age" value="25"/>
+    </plugin>
+  </plugins>
+  <environments default="development">
+
+    <environment id="development">
+      <!-- type="JDBC" 代表使用JDBC的提交和回滚来管理事务 -->
+      <transactionManager type="JDBC" >
+      </transactionManager>
+      <!--连接数据源及mysql数据库-->
+      <dataSource type="Mybatis.dbdao.myDataSourceFactory">
+      </dataSource>
+    </environment>
+
+  </environments>
+
+  <mappers>
+    <!--<mapper resource="mappers/DepartmentTMapper.xml"></mapper>-->
+    <!-- 三种mapper配置方法
+  		1.<mapper resource="student/mapper/TeacherTMapper.xml"/>
+  		2.<mapper class="student.po.TeacherT"/>
+  		3.<package name="student/mapper"/>
+  	-->
+    <mapper resource="Mybatis/mappers/DepartmentTMapper.xml"/>
+    <mapper resource="Mybatis/mappers/TeacherTMapper.xml"/>
+  </mappers>
+
+</configuration>

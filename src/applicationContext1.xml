@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+<!--
+    id:特定标识
+    class：加载类的全路径
+    factory-method:加载方法的名称
+    factory-bean:哪个类产生的实例
+   -->
+    <!--singleton 单例-->
+    <!--prototype 原型多例-->
+    <bean id="dao" class="SpringTest.Dao.dao" scope="prototype" init-method="init"></bean>
+    <bean id="getdao" class="SpringTest.Dao.dao" factory-method="getdao"></bean>
+   <!--
+    依赖注入：即传递值
+    name 参数名
+    value 参数值
+    index 参数数组下标-->
+    <!--
+    constructor-arg : 对于类来说是构造函数
+                      对于方法来说是形参
+    -->
+    <bean id="user" factory-method="getuser" factory-bean="dao">
+        <constructor-arg name="name" value="刘晓含"/>
+        <constructor-arg name="age" value="18"/>
+    </bean>
+    <bean id="u" class="SpringTest.Dao.user">
+        <property name="name" value="刘晓含啊"></property><!--基本属性注入-->
+        <property name="age" value="16"></property><!--基本属性注入-->
+        <property name="d" ref="dao"></property><!--对象注入-->
+        <property name="list1"><!--list注入-->
+            <list value-type="SpringTest.Dao.dao">
+               <ref bean="dao"></ref>
+               <ref bean="dao"></ref>
+               <ref bean="dao"></ref>
+               <ref bean="dao"></ref>
+            </list>
+        </property>
+        <property name="slist"><!--list注入-->
+            <list value-type="java.lang.String">
+                <value>aaa</value>
+                <value>bbb</value>
+                <value>ccc</value>
+                <value>ddd</value>
+                <value>eee</value>
+            </list>
+        </property>
+        <property name="map"><!--map注入-->
+            <map key-type="java.lang.String" value-type="SpringTest.Dao.dao">
+                <entry key="dao1" value-ref="dao"></entry>
+                <entry key="dao2" value-ref="dao"></entry>
+                <entry key="dao3" value-ref="dao"></entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>
+
